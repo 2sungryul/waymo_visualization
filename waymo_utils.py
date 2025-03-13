@@ -16,20 +16,23 @@ from waymo_open_dataset.utils import frame_utils
 from waymo_open_dataset import dataset_pb2
 from waymo_open_dataset import label_pb2
 
-
 #segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-10017090168044687777_6380_000_6400_000_with_camera_labels.tfrecord"
 #output_dir = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo"
 #save = False
 #visu = False
 
+Color = tuple[int, int, int]
 
-class ColorCodes:
-    Color = tuple[int, int, int]
+class ColorCodes:    
     vehicle: Color = (0, 0, 255)
     pedestrian: Color = (0, 255, 0)
     cyclist: Color = (0, 255, 255)
     sign: Color = (255, 0, 0)
 
+OBJ_TYPE_MAP = {1:label_pb2.Label.Type.TYPE_VEHICLE,
+                2:label_pb2.Label.Type.TYPE_PEDESTRIAN,
+                4:label_pb2.Label.Type.TYPE_CYCLIST,
+                3:label_pb2.Label.Type.TYPE_SIGN}
 
 OBJECT_COLORS = {
     label_pb2.Label.Type.TYPE_VEHICLE: ColorCodes.vehicle,
@@ -86,7 +89,7 @@ def visualize_pcd_return(frame: Frame, pcd_return: PcdReturn, visu: bool) -> Non
     print(f'points_cp_all shape: {points_cp_all.shape}')
  
     if visu:
-        show_point_cloud(points_all, frame.laser_labels)
+        show_point_cloud_rainbow(points_all, frame.laser_labels)
 
 Point3D = list[float]
 LineSegment = tuple[int, int]
@@ -119,7 +122,7 @@ def show_point_cloud_rainbow(points: np.ndarray, laser_labels: Label) -> None:
     for label in laser_labels:
         bbox_corners = transform_bbox_waymo(label)
         bbox_points = build_open3d_bbox(bbox_corners, label)
- 
+        print(label.id)    
         colors = [[1, 0, 0] for _ in range(len(LINE_SEGMENTS))]
         line_set = o3d.geometry.LineSet(
             points=o3d.utility.Vector3dVector(bbox_points),
@@ -167,8 +170,10 @@ def show_point_cloud_binary(points: np.ndarray, laser_labels: Label) -> None:
     for label in laser_labels:
         bbox_corners = transform_bbox_waymo(label)
         bbox_points = build_open3d_bbox(bbox_corners, label)
- 
-        colors = [[1, 0, 0] for _ in range(len(LINE_SEGMENTS))]
+        obj_color = OBJECT_COLORS[OBJ_TYPE_MAP[label.type]]
+        print(obj_color) 
+        #colors = [[1, 0, 0] for _ in range(len(LINE_SEGMENTS))]
+        colors = [obj_color for _ in range(len(LINE_SEGMENTS))]
         line_set = o3d.geometry.LineSet(
             points=o3d.utility.Vector3dVector(bbox_points),
             lines=o3d.utility.Vector2iVector(LINE_SEGMENTS),
