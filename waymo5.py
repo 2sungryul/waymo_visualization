@@ -19,7 +19,11 @@ from waymo_open_dataset.dataset_pb2 import Frame
 from waymo_open_dataset.utils import frame_utils
 from waymo_open_dataset import label_pb2
 
-segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-10017090168044687777_6380_000_6400_000_with_camera_labels.tfrecord"
+#segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-10017090168044687777_6380_000_6400_000_with_camera_labels.tfrecord"
+segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-10023947602400723454_1120_000_1140_000_with_camera_labels.tfrecord"
+#segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-1005081002024129653_5313_150_5333_150_with_camera_labels.tfrecord"
+#segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-10061305430875486848_1080_000_1100_000_with_camera_labels.tfrecord"
+#segment_path = r"/mnt/d/Users/2sungryul/Dropbox/Work/Dataset/Waymo/individual_files_training_segment-10072140764565668044_4060_000_4080_000_with_camera_labels.tfrecord"
 
 CLOUD_NAME = "points"
 FRAME_NUM = 190
